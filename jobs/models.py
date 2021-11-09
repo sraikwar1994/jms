@@ -3,7 +3,7 @@ from core.models import TimeFeed
 
 
 class Job(TimeFeed):
-    title = models.CharField(max_length=200)
+    title = models.CharField(max_length=200, unique=True)
     description = models.TextField()
 
     def __str__(self):
