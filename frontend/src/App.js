@@ -1,37 +1,41 @@
 import React, { Component } from "react"
-import Modal from "./components/Modal";
 import axios from "axios";
+import SkillsForm from "./components/SkillsForm";
 
-class App extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            activeItem: {
-                title: "",
-                description: "",
-            },
-            Skill: {
-                skill_name: "",
-                most_used: "",
-            },
-            jobDetail: {
-                title: "",
-                skills: [],
-                description: "",
-            },
-            jobList: [],
-            skillList: [],
-            jobDetail: []
-        };
-    };
+const App = () => {
+    const [activeItem, setActiveItem] = React.useState({
+        title: "",
+        description: "",
+        // completed: false,
+        skills: [{ name: ''}],
+      })
+      const [skills, setSkills] = React.useState([{ name: ''}]);
+      const [jobDetail, setJobDetail] = React.useState({
+        title: "",
+        skills: [],
+        description: "",
+    });
+      const [jobList, setjobList] = React.useState([]);
+     const [skillList, setskillList] = React.useState([]);
 
-    async componentDidMount() {
+    //   jobDetail: {
+    //     title: "",
+    //     skills: [],
+    //     description: "",
+    // },
+    // jobList: [],
+    // skillList: [],
+    // jobDetail: []
+
+      console.log(activeItem);
+
+      const getData = async () => {
         try {
             const res = await fetch('http://localhost:8000/jobs/get_jobs_list');
             const jobList = await res.json()
-            this.setState({
+            setjobList(
                 jobList
-            });
+            );
         } catch (e) {
             console.log(e)
         }
@@ -57,23 +61,61 @@ class App extends Component {
         }
     }
 
-    toggle = () => {
-        this.setState({ modal: !this.state.modal });
-    };
-
-    // Responsible for saving the task
-    handleSubmit = item => {
-        this.toggle();
-        axios.post("http://localhost:8000/jobs/create_job", item)
-    };
-
-    createItem = () => {
-        const item = {title: "", description: "", job_skill: [] }
+    const getSkillsData=async ()=>{
+        try {
+            const res = await fetch('http://localhost:8000/jobs/get_skills_list');
+            const skillList = await res.json()
+            setskillList(
+                skillList
+            );
+        } catch (e) {
+            console.log(e)
+        }
     }
+      
+      React.useEffect(() => {
+       
+
+    const getJobDetails=async()=>{
+        try {
+            const res = await fetch('http://localhost:8000/jobs/get_job_details/3');
+            const jobDetail = await res.json()
+            setJobDetail(
+                jobDetail
+            );
+        } catch (e) {
+            console.log(e)
+        }
+       }
+
+       
+    getSkillsData();
+       getJobDetails();
+    getData();
+},[])
+async function onSave(){
+
+    try {
+        const body = {
+            title: activeItem.title,
+            description: activeItem.description,
+            job_skill: skills.map(item => ({  skill_name: item.name})) 
+        }
+            // const res = await fetch('http://localhost:8000/api/todos/');
+            const res = axios.post("http://localhost:8000/jobs/create", body).then(item => {
+                getData();
+                getSkillsData();
+            }).catch(e => console.log(e))
+            
+          } catch (e) {
+            console.log(e);
+        }
+}
 
 
-    renderItems = () => {
-        const newItems = this.state.jobList;
+
+      const renderItems = () => {
+        const newItems = jobList;
         return newItems.map(item => (
 
             <button type="button" class="list-group-item list-group-item-action" aria-current="true">
@@ -83,8 +125,8 @@ class App extends Component {
         ));
     };
 
-    renderSkills = () => {
-        const newSkills = this.state.skillList;
+    const renderSkills = () => {
+        const newSkills = skillList;
         return newSkills.map(item => (
             <li
                 key={item.skill_name}
@@ -98,15 +140,23 @@ class App extends Component {
         ));
     };
 
-    renderJobDetails = () => {
-        const jobDetails = this.state.jobDetail;
+
+    const renderJobDetails = () => {
+        const jobDetails = jobDetail;
 
     };
 
-    render() {
-        return (
-            <main className="content">
-                <div className="container py-3">
+      return (
+        <main className="content">
+        <h1 className="text-white text-uppercase text-center my-4">Harness Job Manager</h1>
+        <div className="row">
+          <div className="col-md-6 col-sm-10 mx-auto p-0">
+              <SkillsForm activeItem={activeItem} setActiveItem={setActiveItem} skills={skills} setSkills={setSkills} onSave={onSave} />
+            
+          </div>
+        </div>
+        <div className="row">
+        <div className="container py-3">
                     <div className="row">
 
                       <div className="col-md-3 col-sm-10 mx-auto">
@@ -114,7 +164,8 @@ class App extends Component {
                           <div class="card-header">
                             Job List
                           </div>
-                          {this.renderItems()}
+
+                          {renderItems()}
 
                         </div>
                       </div>
@@ -124,7 +175,7 @@ class App extends Component {
                             Detail
                           </div>
                           <div className="card-body">
-                          {this.renderJobDetails()}
+                          {renderJobDetails()}
                           </div>
                         </div>
                       </div>
@@ -134,15 +185,18 @@ class App extends Component {
                             Skills
                           </div>
                           <ul className="list-group list-group-numbered">
-                          {this.renderSkills()}
+
+                          {renderSkills()}
                           </ul>
                         </div>
                       </div>
                     </div>
                 </div>
-            </main>
-        )
+            </div>
+       
+      </main>
+      )
     }
-}
 
+  
 export default App;
