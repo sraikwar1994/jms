@@ -4,7 +4,7 @@ import {
     Modal,
     ModalHeader,
     ModalBody,
-    ModalFooter
+    ModalFooter,
     Form,
     FormGroup,
     Input,
@@ -21,14 +21,19 @@ export default class CustomModal extends Component {
     }
     handleChange = e => {
         let { name, value } = e.target;
-        const activeItem = { ...this.state.activeItem, [name]: value};
+        let activeItem;
+        if(name == 'skills') {
+            activeItem = { ...this.state.activeItem, [name]: [...this.state.activeItem.skills, value]}
+        } else activeItem = { ...this.state.activeItem, [name]: value};
         this.setState({ activeItem });
     };
     render() {
         const { toggle, onSave } = this.props;
+        console.log(this.state);
+
         return (
             <Modal isOpen={true} toggle={toggle}>
-                <ModalHeader toggle={toggle}>Todo Item</ModalHeader>
+                <ModalHeader toggle={toggle}>Harness Job Manager</ModalHeader>
                 <ModalBody>
                     <Form>
                         <FormGroup>
@@ -49,6 +54,16 @@ export default class CustomModal extends Component {
                             value={this.state.activeItem.description}
                             onChange={this.handleChange}
                             placeholder="Enter Job description"
+                            />
+                        </FormGroup>
+                        <FormGroup>
+                            <Label for="Skills">Skills</Label>
+                            <Input
+                              type="text"
+                              name="skills"
+                              value={this.state.activeItem.skills}
+                              onChange={this.handleChange}
+                              placeholder="Skills"
                             />
                         </FormGroup>
                     </Form>
