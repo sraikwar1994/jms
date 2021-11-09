@@ -31,7 +31,7 @@ const App = () => {
 
       const getData = async () => {
         try {
-            const res = await fetch('https://873d-171-49-151-6.ngrok.io/jobs/get_jobs_list');
+            const res = await fetch('http://localhost:8000/jobs/get_jobs_list');
             const jobList = await res.json()
             setjobList(
                 jobList
@@ -43,7 +43,7 @@ const App = () => {
 
     const getSkillsData=async ()=>{
         try {
-            const res = await fetch('https://873d-171-49-151-6.ngrok.io/jobs/get_skills_list');
+            const res = await fetch('http://localhost:8000/jobs/get_skills_list');
             const skillList = await res.json()
             setskillList(
                 skillList
@@ -58,7 +58,7 @@ const App = () => {
 
     const getJobDetails=async()=>{
         try {
-            const res = await fetch('https://873d-171-49-151-6.ngrok.io/jobs/get_job_details/3');
+            const res = await fetch('http://localhost:8000/jobs/get_job_details/3');
             const jobDetail = await res.json()
             setJobDetail(
                 jobDetail
@@ -82,7 +82,7 @@ async function onSave(){
             job_skill: skills.map(item => ({  skill_name: item.name})) 
         }
             // const res = await fetch('http://localhost:8000/api/todos/');
-            const res = axios.post("https://873d-171-49-151-6.ngrok.io/jobs/create", body).then(item => {
+            const res = axios.post("http://localhost:8000/jobs/create", body).then(item => {
                 getData();
                 getSkillsData();
             }).catch(e => console.log(e))
