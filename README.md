@@ -14,3 +14,5 @@ Job App API Endpoints
 - List Jobs `jobs/get_jobs_list`
 - Get Job Detail by job_id `jobs/get_job_details/<job_id>`
 - Get Skills list with most used number `jobs/get_skills_list`
+
+API Documentation url: https://docs.google.com/document/d/11yT3UlHNCZyN7BNy5R6175I5tHtFrMWzK8ahMlI7s5E/edit?usp=sharing
