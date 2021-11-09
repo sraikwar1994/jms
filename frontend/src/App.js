@@ -1,5 +1,4 @@
 import React, { Component } from "react"
-import Modal from "./components/Modal"; 
 import axios from "axios";
 import SkillsForm from "./components/SkillsForm";
 
@@ -11,104 +10,167 @@ const App = () => {
         skills: [{ name: ''}],
       })
       const [skills, setSkills] = React.useState([{ name: ''}]);
+      const [jobDetail, setJobDetail] = React.useState({
+        title: "",
+        skills: [],
+        description: "",
+    });
+      const [jobList, setjobList] = React.useState([]);
+     const [skillList, setskillList] = React.useState([]);
+
+    //   jobDetail: {
+    //     title: "",
+    //     skills: [],
+    //     description: "",
+    // },
+    // jobList: [],
+    // skillList: [],
+    // jobDetail: []
 
       console.log(activeItem);
 
-    // state = {
-    //   viewCompleted: false,
-    //   activeItem: {
-    //     title: "",
-    //     description: "",
-    //     // completed: false,
-    //     skills: [],
-    //   },
-    //   todoList: []
-    // };
+      const getData = async () => {
+        try {
+            const res = await fetch('https://873d-171-49-151-6.ngrok.io/jobs/get_jobs_list');
+            const jobList = await res.json()
+            setjobList(
+                jobList
+            );
+        } catch (e) {
+            console.log(e)
+        }
+    }
 
-    // async componentDidMount() {
-    //   try {
-    //     // const res = await fetch('http://localhost:8000/api/todos/');
-    //     const res = await fetch('https://86d0-171-61-61-114.ngrok.io/jobs/get_jobs_list');
-    //     const todoList = await res.json();
-    //     this.setState({
-    //       todoList
-    //     });
-    //   } catch (e) {
-    //     console.log(e);
-    // }
-    // }
+    const getSkillsData=async ()=>{
+        try {
+            const res = await fetch('https://873d-171-49-151-6.ngrok.io/jobs/get_skills_list');
+            const skillList = await res.json()
+            setskillList(
+                skillList
+            );
+        } catch (e) {
+            console.log(e)
+        }
+    }
+      
+      React.useEffect(() => {
+       
 
-    // toggle = () => {
-    //   this.setState({ modal: !this.state.modal });
-    // };
-  
-    // //Responsible for saving the task
-    // handleSubmit = item => {
-    //   this.toggle();
-    //   if (item.id) {
-    //     axios
-    //       .put(`http://localhost:8000/api/todos/${item.id}/`, item)
-    //     return;  
-    //   }
-    //   axios
-    //     .post("http://localhost:8000/api/todos/", item)
-    // };
+    const getJobDetails=async()=>{
+        try {
+            const res = await fetch('https://873d-171-49-151-6.ngrok.io/jobs/get_job_details/3');
+            const jobDetail = await res.json()
+            setJobDetail(
+                jobDetail
+            );
+        } catch (e) {
+            console.log(e)
+        }
+       }
 
-    // createItem = () => {
-    //   const item = {title: "", description: "", completed: false };
-    //   this.setState({ activeItem: item, modal: !this.state.modal });
-    // };
+       
+    getSkillsData();
+       getJobDetails();
+    getData();
+},[])
+async function onSave(){
 
-   
-    // renderTabList = () => {
-    // };
+    try {
+        const body = {
+            title: activeItem.title,
+            description: activeItem.description,
+            job_skill: skills.map(item => ({  skill_name: item.name})) 
+        }
+            // const res = await fetch('http://localhost:8000/api/todos/');
+            const res = axios.post("https://873d-171-49-151-6.ngrok.io/jobs/create", body).then(item => {
+                getData();
+                getSkillsData();
+            }).catch(e => console.log(e))
+            
+          } catch (e) {
+            console.log(e);
+        }
+}
 
-    // // renderItems = () => {
-    //   const { viewCompleted } = this.state;
-    //   const newItems = this.state.todoList.filter(
-    //     item => item.completed === viewCompleted
-    //   );
-    //   return newItems.map(item => (
-    //     <li 
-    //       key={item.id}
-    //       className="list-group-item d-flex justify-content-between align-items-center"
-    //     >
-    //       <span 
-    //         className={`todo-title mr-2 ${
-    //           this.state.viewCompleted ? "completed-todo" : ""
-    //         }`}
-    //         title={item.description}
-    //         >
-    //           {item.title}
-    //         </span>
-    //     </li>
-    //   ));
-    // };
+
+
+      const renderItems = () => {
+        const newItems = jobList;
+        return newItems.map(item => (
+
+            <button type="button" class="list-group-item list-group-item-action" aria-current="true">
+            {item.title}
+            </button>
+
+        ));
+    };
+
+    const renderSkills = () => {
+        const newSkills = skillList;
+        return newSkills.map(item => (
+            <li
+                key={item.skill_name}
+                className="list-group-item d-flex justify-content-between align-items-start"
+            >
+                <div class="ms-2 me-auto">
+                  <div class="fw-bold">{item.skill_name}</div>
+                </div>
+                <span class="badge bg-primary rounded-pill">{item.most_used}</span>
+            </li>
+        ));
+    };
+
+    const renderJobDetails = () => {
+        const jobDetails = jobDetail;
+
+    };
 
       return (
         <main className="content">
         <h1 className="text-white text-uppercase text-center my-4">Harness Job Manager</h1>
         <div className="row">
           <div className="col-md-6 col-sm-10 mx-auto p-0">
-              <SkillsForm activeItem={activeItem} setActiveItem={setActiveItem} skills={skills} setSkills={setSkills} />
-            {/* <div className="card p-3">
-              <div className="">
-                <button onClick={this.createItem} className="btn btn-success">Add Task</button>
-              </div>
-              {this.renderTabList()}
-              <ul className="list-group list-group-flush">
-                {this.renderItems()}
-              </ul>
-            </div> */}
+              <SkillsForm activeItem={activeItem} setActiveItem={setActiveItem} skills={skills} setSkills={setSkills} onSave={onSave} />
+            
           </div>
         </div>
-        {/* {this.state.modal ? (
-          <Modal
-            activeItem={this.state.activeItem}
-            toggle={this.toggle}
-            onSave={this.handleSubmit}
-          />
-        ): null} */}
+        <div className="row">
+        <div className="container py-3">
+                    <div className="row">
+
+                      <div className="col-md-3 col-sm-10 mx-auto">
+                        <div className="card">
+                          <div class="card-header">
+                            Job List
+                          </div>
+                          {renderItems()}
+
+                        </div>
+                      </div>
+                      <div className="col-md-6 col-sm-10 mx-auto">
+                        <div className="card">
+                          <div class="card-header">
+                            Detail
+                          </div>
+                          <div className="card-body">
+                          {renderJobDetails()}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-md-3 col-sm-10 mx-auto">
+                        <div className="card">
+                        <div class="card-header">
+                            Skills
+                          </div>
+                          <ul className="list-group list-group-numbered">
+                          {renderSkills()}
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+</div>
+       
       </main>
       )
     }

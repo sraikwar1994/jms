@@ -11,7 +11,7 @@ import {
 } from "reactstrap";
 import axios from 'axios';
 
-const SkillsForm = ({ activeItem, setActiveItem, skills, setSkills}) => {
+const SkillsForm = ({ activeItem, setActiveItem, skills, setSkills,onSave}) => {
     const handleChange = (e) => {
         let { name, value } = e.target;
         let activeItems;
@@ -30,22 +30,7 @@ const SkillsForm = ({ activeItem, setActiveItem, skills, setSkills}) => {
         updatedSkils[i]['name'] = value;
         setSkills(updatedSkils)
     }
-    async function save(){
-
-        try {
-            const body = {
-                title: activeItem.title,
-                description: activeItem.description,
-                job_skill: skills.map(item => ({  skill_name: item.name})) 
-            }
-                // const res = await fetch('http://localhost:8000/api/todos/');
-                const res = axios.post("https://873d-171-49-151-6.ngrok.io/jobs/create", body).then(item => console.log(item))
-                
-              } catch (e) {
-                console.log(e);
-            }
-    }
-
+   
     console.log(skills);
 
 
@@ -92,7 +77,7 @@ const SkillsForm = ({ activeItem, setActiveItem, skills, setSkills}) => {
         </div>
     </FormGroup>
 
-        <Button color="success" onClick={save}>Save</Button>   
+        <Button color="success" onClick={onSave}>Save</Button>   
 </Form>
 }
 export default SkillsForm;
