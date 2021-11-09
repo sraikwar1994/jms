@@ -10,7 +10,18 @@ class App extends Component {
                 title: "",
                 description: "",
             },
-            jobList: []
+            Skill: {
+                skill_name: "",
+                most_used: "",
+            },
+            jobDetail: {
+                title: "",
+                skills: [],
+                description: "",
+            },
+            jobList: [],
+            skillList: [],
+            jobDetail: []
         };
     };
 
@@ -20,6 +31,26 @@ class App extends Component {
             const jobList = await res.json()
             this.setState({
                 jobList
+            });
+        } catch (e) {
+            console.log(e)
+        }
+
+        try {
+            const res = await fetch('http://localhost:8000/jobs/get_skills_list');
+            const skillList = await res.json()
+            this.setState({
+                skillList
+            });
+        } catch (e) {
+            console.log(e)
+        }
+
+        try {
+            const res = await fetch('http://localhost:8000/jobs/get_job_details/3');
+            const jobDetail = await res.json()
+            this.setState({
+                jobDetail
             });
         } catch (e) {
             console.log(e)
@@ -44,31 +75,70 @@ class App extends Component {
     renderItems = () => {
         const newItems = this.state.jobList;
         return newItems.map(item => (
+
+            <button type="button" class="list-group-item list-group-item-action" aria-current="true">
+            {item.title}
+            </button>
+
+        ));
+    };
+
+    renderSkills = () => {
+        const newSkills = this.state.skillList;
+        return newSkills.map(item => (
             <li
-                key={item.id}
-                className="list-group-item d-flex justify-content-between align-items-center"
+                key={item.skill_name}
+                className="list-group-item d-flex justify-content-between align-items-start"
             >
-                <span
-                    className={`job-title mr-2`}
-                    title = {item.description}
-                >
-                    {item.title}
-                </span>
+                <div class="ms-2 me-auto">
+                  <div class="fw-bold">{item.skill_name}</div>
+                </div>
+                <span class="badge bg-primary rounded-pill">{item.most_used}</span>
             </li>
         ));
+    };
+
+    renderJobDetails = () => {
+        const jobDetails = this.state.jobDetail;
+
     };
 
     render() {
         return (
             <main className="content">
-                <div className="row">
-                  <div className="col-md-6 col-sm-10 mx-auto p-0">
-                    <div className="card p-3">
-                      <ul className="list-group list-group-flush">
-                      {this.renderItems()}
-                      </ul>
+                <div className="container py-3">
+                    <div className="row">
+
+                      <div className="col-md-3 col-sm-10 mx-auto">
+                        <div className="card">
+                          <div class="card-header">
+                            Job List
+                          </div>
+                          {this.renderItems()}
+
+                        </div>
+                      </div>
+                      <div className="col-md-6 col-sm-10 mx-auto">
+                        <div className="card">
+                          <div class="card-header">
+                            Detail
+                          </div>
+                          <div className="card-body">
+                          {this.renderJobDetails()}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-md-3 col-sm-10 mx-auto">
+                        <div className="card">
+                        <div class="card-header">
+                            Skills
+                          </div>
+                          <ul className="list-group list-group-numbered">
+                          {this.renderSkills()}
+                          </ul>
+                        </div>
+                      </div>
                     </div>
-                  </div>
                 </div>
             </main>
         )
