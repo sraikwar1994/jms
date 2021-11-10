@@ -130,3 +130,11 @@ dmypy.json
 
 #pycharm
 .idea
+
+
+# node_modules
+node_modules/
+
+
+# staticfiles
+staticfiles/

@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -29,8 +30,8 @@ ALLOWED_HOSTS = ["*",]
 
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',
-    'https://23c9-171-60-171-179.ngrok.io',
-    'https://b108-171-60-171-179.ngrok.io',
+    'https://pure-escarpment-26777.herokuapp.com',
+    'http://192.168.1.19:34801',
 ]
 
 # Application definition
@@ -150,3 +151,12 @@ import django_heroku
 
 # Activate Django-Heroku.
 django_heroku.settings(locals())
+
+
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'frontend/build/static')
+]
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
