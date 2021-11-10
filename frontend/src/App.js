@@ -148,53 +148,51 @@ async function onSave(){
 
       return (
         <main className="content">
-        <h1 className="text-white text-uppercase text-center my-4">Harness Job Manager</h1>
-        <div className="row">
-          <div className="col-md-6 col-sm-10 mx-auto p-0">
-              <SkillsForm activeItem={activeItem} setActiveItem={setActiveItem} skills={skills} setSkills={setSkills} onSave={onSave} />
-            
-          </div>
-        </div>
-        <div className="row">
-        <div className="container py-3">
-                    <div className="row">
-
-                      <div className="col-md-3 col-sm-10 mx-auto">
-                        <div className="card">
-                          <div class="card-header">
-                            Job List
-                          </div>
-
-                          {renderItems()}
-
-                        </div>
-                      </div>
-                      <div className="col-md-6 col-sm-10 mx-auto">
-                        <div className="card">
-                          <div class="card-header">
-                            Detail
-                          </div>
-                          <div className="card-body">
-                          {renderJobDetails()}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-md-3 col-sm-10 mx-auto">
-                        <div className="card">
-                        <div class="card-header">
-                            Skills
-                          </div>
-                          <ul className="list-group list-group-numbered">
-
-                          {renderSkills()}
-                          </ul>
-                        </div>
-                      </div>
+           <h1 className="text-white text-uppercase text-center my-4">Harness Job Manager</h1>
+           <div className="container my-3">
+              <div className="row">
+                 <div className="col-md-9 col-sm-10">
+                    <div className="card">
+                       <div className="card-body">
+                          <SkillsForm activeItem={activeItem} setActiveItem={setActiveItem} skills={skills} setSkills={setSkills} onSave={onSave} />
+                       </div>
                     </div>
-                </div>
-            </div>
-       
-      </main>
+                 </div>
+                 <div className="col-md-3 col-sm-10">
+                    <div className="card">
+                       <div class="card-header">
+                          Skills
+                       </div>
+                       <ul className="list-group list-group-numbered">
+                          {renderSkills()}
+                       </ul>
+                    </div>
+                 </div>
+              </div>
+           </div>
+           <div className="container my-3">
+              <div className="row">
+                 <div className="col-md-3 col-sm-10">
+                    <div className="card">
+                       <div class="card-header">
+                          Job List
+                       </div>
+                       {renderItems()}
+                    </div>
+                 </div>
+                 <div className="col-md-9 col-sm-10">
+                    <div className="card">
+                       <div class="card-header">
+                          Detail
+                       </div>
+                       <div className="card-body">
+                          {renderJobDetails()}
+                       </div>
+                    </div>
+                 </div>
+              </div>
+           </div>
+        </main>
       )
     }
 
