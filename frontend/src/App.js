@@ -30,7 +30,7 @@ const App = () => {
 
       const getData = async () => {
         try {
-            const res = await fetch('https://fa60-171-60-171-179.ngrok.io/jobs/get_jobs_list');
+            const res = await fetch('http://localhost:8000/jobs/get_jobs_list');
             const jobList = await res.json()
             setjobList(
                 jobList
@@ -40,7 +40,7 @@ const App = () => {
         }
 
         try {
-            const res = await fetch('https://fa60-171-60-171-179.ngrok.io/jobs/get_skills_list');
+            const res = await fetch('http://localhost:8000/jobs/get_skills_list');
             const skillList = await res.json()
             this.setState({
                 skillList
@@ -50,7 +50,7 @@ const App = () => {
         }
 
         try {
-            const res = await fetch('https://fa60-171-60-171-179.ngrok.io/jobs/get_job_details/3');
+            const res = await fetch('http://localhost:8000/jobs/get_job_details/3');
             const jobDetail = await res.json()
             this.setState({
                 jobDetail
@@ -62,7 +62,7 @@ const App = () => {
 
     const getSkillsData=async ()=>{
         try {
-            const res = await fetch('https://fa60-171-60-171-179.ngrok.io/jobs/get_skills_list');
+            const res = await fetch('http://localhost:8000/jobs/get_skills_list');
             const skillList = await res.json()
             setskillList(
                 skillList
@@ -73,7 +73,7 @@ const App = () => {
     }
     const getJobDetails=async(e)=>{
         try {
-            const url='https://fa60-171-60-171-179.ngrok.io/jobs/get_job_details/'+e.target.id;
+            const url='http://localhost:8000/jobs/get_job_details/'+e.target.id;
             const res = await fetch(url);
             const jobDetail = await res.json()
             console.log(e.target.id)
@@ -85,11 +85,26 @@ const App = () => {
         }
        }
 
-      
-      React.useEffect(() => {   
+const getNewJobDetails=async()=>{
+        try {
+            const job_id = jobList[0].id;
+            const url='http://localhost:8000/jobs/get_job_details/' +job_id;
+            const res = await fetch(url);
+            const jobDetail = await res.json()
+            setJobDetail(
+                jobDetail
+            );
+        } catch (e) {
+            console.log(e)
+        }
+       }
+
+      React.useEffect(() => {
     getSkillsData();
-       getJobDetails();
-    getData();
+        getData();
+            getNewJobDetails();
+
+
 },[])
 async function onSave(){
 
@@ -99,8 +114,8 @@ async function onSave(){
             description: activeItem.description,
             job_skill: skills.map(item => ({  skill_name: item.name})) 
         }
-            // const res = await fetch('https://fa60-171-60-171-179.ngrok.io/api/todos/');
-            const res = axios.post("https://fa60-171-60-171-179.ngrok.io/jobs/create", body).then(item => {
+            // const res = await fetch('http://localhost:8000/api/todos/');
+            const res = axios.post("http://localhost:8000/jobs/create", body).then(item => {
                 getData();
                 getSkillsData();
             }).catch(e => console.log(e))
@@ -140,18 +155,29 @@ async function onSave(){
 
     const renderJobDetails = () => {
         const jobDetails = jobDetail;
-        return Object.entries(jobDetails).map(([key, value], i) => {
-            
+        const data = [];
+        const job_skills = jobDetails.job_skill || [];
+        console.log(jobDetails)
 			return (
-				<div key={key}>
-                    {value}
-				</div>
+
+			<div className="card" >
+                  <div className="card-body">
+
+                    <h5 className="card-title">{jobDetail.title}</h5>
+                    <p className="card-text">{jobDetail.description}</p>
+                  </div>
+                  <div className="card-body">
+                   {job_skills.map(item => <span class="badge bg-light text-dark">{item.skill_name}</span>)}
+
+                  </div>
+                </div>
+
+
 			)
-		})
     };
       return (
         <main className="content">
-           <h1 className="text-white text-uppercase text-center my-4">Harness Job Manager</h1>
+           <div className="text-white text-uppercase text-center">Harness Job Manager</div>
            <div className="container my-3">
               <div className="row">
                  <div className="col-md-9 col-sm-10">
@@ -162,7 +188,7 @@ async function onSave(){
                     </div>
                  </div>
                  <div className="col-md-3 col-sm-10">
-                    <div className="card">
+                    <div className="card card-height">
                        <div class="card-header">
                           Skills
                        </div>
@@ -176,7 +202,7 @@ async function onSave(){
            <div className="container my-3">
               <div className="row">
                  <div className="col-md-3 col-sm-10">
-                    <div className="card">
+                    <div className="card card-height">
                        <div class="card-header">
                           Job List
                        </div>

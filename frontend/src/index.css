@@ -11,3 +11,8 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.card.card-height {
+   max-height: 400px;
+    overflow: scroll;
+}
