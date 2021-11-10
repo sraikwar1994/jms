@@ -33,7 +33,7 @@ const App = () => {
 
       const getData = async () => {
         try {
-            const res = await fetch('http://localhost:8000/jobs/get_jobs_list');
+            const res = await fetch('https://pure-escarpment-26777.herokuapp.com/jobs/get_jobs_list');
             const jobList = await res.json()
             setjobList(
                 jobList
@@ -43,7 +43,7 @@ const App = () => {
         }
 
         try {
-            const res = await fetch('http://localhost:8000/jobs/get_skills_list');
+            const res = await fetch('https://pure-escarpment-26777.herokuapp.com/jobs/get_skills_list');
             const skillList = await res.json()
             this.setState({
                 skillList
@@ -53,7 +53,7 @@ const App = () => {
         }
 
         try {
-            const res = await fetch('http://localhost:8000/jobs/get_job_details/3');
+            const res = await fetch('https://pure-escarpment-26777.herokuapp.com/jobs/get_job_details/3');
             const jobDetail = await res.json()
             this.setState({
                 jobDetail
@@ -65,7 +65,7 @@ const App = () => {
 
     const getSkillsData=async ()=>{
         try {
-            const res = await fetch('http://localhost:8000/jobs/get_skills_list');
+            const res = await fetch('https://pure-escarpment-26777.herokuapp.com/jobs/get_skills_list');
             const skillList = await res.json()
             setskillList(
                 skillList
@@ -76,7 +76,7 @@ const App = () => {
     }
     const getJobDetails=async(e)=>{
         try {
-            const url='http://localhost:8000/jobs/get_job_details/'+e.target.id;
+            const url='https://pure-escarpment-26777.herokuapp.com/jobs/get_job_details/'+e.target.id;
             const res = await fetch(url);
             const jobDetail = await res.json()
             console.log(e.target.id)
@@ -91,7 +91,7 @@ const App = () => {
 const getNewJobDetails=async()=>{
         try {
             const job_id = jobList[0].id;
-            const url='http://localhost:8000/jobs/get_job_details/' +job_id;
+            const url='https://pure-escarpment-26777.herokuapp.com/jobs/get_job_details/' +job_id;
             const res = await fetch(url);
             const jobDetail = await res.json()
             setJobDetail(
@@ -117,8 +117,8 @@ async function onSave(e){
             description: activeItem.description,
             job_skill: skills.map(item => ({  skill_name: item.name})) 
         }
-            // const res = await fetch('http://localhost:8000/api/todos/');
-            const res = axios.post("http://localhost:8000/jobs/create", body).then(item => {
+            // const res = await fetch('https://pure-escarpment-26777.herokuapp.com/api/todos/');
+            const res = axios.post("https://pure-escarpment-26777.herokuapp.com/jobs/create", body).then(item => {
                 getData();
                 getSkillsData();
                 alert("Job created successfully.")
