@@ -106,7 +106,7 @@ const getNewJobDetails=async()=>{
 
 
 },[])
-async function onSave(){
+async function onSave(e){
 
     try {
         const body = {
@@ -118,9 +118,21 @@ async function onSave(){
             const res = axios.post("http://localhost:8000/jobs/create", body).then(item => {
                 getData();
                 getSkillsData();
-            }).catch(e => console.log(e))
-            
+                alert("Job created successfully.")
+
+            }).catch(e => {
+                const data = e.response.data
+                if (data.title ){
+                    alert("Title: " + data.title[0])
+                }else if (data.description ){
+                    alert("Description: " +data.description[0])
+                }else if (data.job_skill ){
+                    alert("Skill: " + data.job_skill[0])
+                }
+            })
+
           } catch (e) {
+
             console.log(e);
         }
 }
@@ -177,7 +189,7 @@ async function onSave(){
     };
       return (
         <main className="content">
-           <div className="text-white text-uppercase text-center">Harness Job Manager</div>
+           <h1 className="mt-1 text-uppercase text-center">Harness Job Manager</h1>
            <div className="container my-3">
               <div className="row">
                  <div className="col-md-9 col-sm-10">

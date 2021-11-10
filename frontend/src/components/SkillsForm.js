@@ -8,6 +8,8 @@ import {
 } from "reactstrap";
 import axios from 'axios';
 
+
+
 const SkillsForm = ({ activeItem, setActiveItem, skills, setSkills,onSave}) => {
     const handleChange = (e) => {
         let { name, value } = e.target;
@@ -19,6 +21,7 @@ const SkillsForm = ({ activeItem, setActiveItem, skills, setSkills,onSave}) => {
         } else activeItems = { ...activeItem, [name]: value};
         setActiveItem(activeItems);
     }
+
     const axios =require('axios')
     const handleSkillsChange = (e, i) => {
         let { value } = e.target;
@@ -32,7 +35,6 @@ const SkillsForm = ({ activeItem, setActiveItem, skills, setSkills,onSave}) => {
 
 
     return <Form>
-    <h1>Harness Job Manager</h1>
     <FormGroup>
         <Label for="title">Title</Label>
         <Input

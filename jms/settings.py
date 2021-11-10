@@ -30,6 +30,7 @@ ALLOWED_HOSTS = ["*",]
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',
     'https://23c9-171-60-171-179.ngrok.io',
+    'https://b108-171-60-171-179.ngrok.io',
 ]
 
 # Application definition
