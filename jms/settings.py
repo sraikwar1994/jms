@@ -34,6 +34,7 @@ CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',
     'https://pure-escarpment-26777.herokuapp.com',
     'http://192.168.1.19:34801',
+    'http://0.0.0.0:5000',
 ]
 
 # Application definition
@@ -100,7 +101,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
         'TEST': {
-            'NAME': 'test_db.sqlite3',
+            'NAME': BASE_DIR / 'test_db.sqlite3',
         },
     }
 }
