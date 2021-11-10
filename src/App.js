@@ -2,6 +2,9 @@ import React from "react"
 import axios from "axios";
 import SkillsForm from "./components/SkillsForm";
 
+axios.defaults.xsrfCookieName = 'csrftoken'
+axios.defaults.xsrfHeaderName = 'X-CSRFToken'
+
 const App = () => {
     const [activeItem, setActiveItem] = React.useState({
         title: "",
